@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
+import { DataSourceOptions } from 'typeorm';
 
 @Injectable()
 export class ConfigsService {
@@ -11,6 +12,20 @@ export class ConfigsService {
     };
 
     this.checkUndefined(config, 'server');
+    return config;
+  }
+
+  get mysql() {
+    const config: DataSourceOptions = {
+      type: 'mysql',
+      host: this.config.get<string>('MYSQL_HOST'),
+      port: Number(this.config.get<number>('MYSQL_PORT')),
+      username: this.config.get<string>('MYSQL_USERNAME'),
+      password: this.config.get<string>('MYSQL_PASSWORD'),
+      database: this.config.get<string>('MYSQL_DATABASE'),
+    };
+
+    this.checkUndefined(config, 'mysql');
     return config;
   }
 

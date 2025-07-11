@@ -20,7 +20,8 @@
     // NOTE: custom
     "baseUrl": "src",
     "paths": {
-      "@configs": ["configs"]
+      "@configs": ["configs"],
+      "@databases": ["databases"]
     }
   }
 }
