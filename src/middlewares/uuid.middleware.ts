@@ -9,8 +9,8 @@ export class UUIDMiddleware implements NestMiddleware {
   constructor(private readonly context: Context) {}
 
   use(req: Request, _: Response, next: NextFunction) {
-    const txId = req.get('x-request-id') || uuid();
-    this.context.set(ContextKey.TXID, txId);
+    const traceId = req.get('x-request-id') || uuid();
+    this.context.set(ContextKey.TRACE_ID, traceId);
     next();
   }
 }

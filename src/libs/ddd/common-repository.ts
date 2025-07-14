@@ -16,6 +16,10 @@ export abstract class CommonRepository<T extends CommonEntity> {
   }
 
   async save(entities: T[]) {
+    entities.forEach((entity) => {
+      entity.setTraceId(this.context.get(ContextKey.TRACE_ID));
+    });
+
     await this.entityManager.save(entities);
   }
 }
