@@ -3,6 +3,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 
 export enum ContextKey {
   TXID = 'txId',
+  ENTITY_MANAGER = 'entityManager',
 }
 
 export const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>();
