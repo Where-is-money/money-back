@@ -4,12 +4,12 @@ import { ConfigsModule } from '@configs';
 import { DatabasesModule } from '@databases';
 import { ContextMiddleware, UUIDMiddleware } from '@middlewares';
 import { ContextModule } from '@libs/context';
-import { AdminsModule } from './services/admins.module';
-import { GeneralsModule } from './services/generals.module';
 import { RequestLoggerInterceptor } from '@libs/interceptors';
+import adminsModules from './services/admins';
+import generalsModules from './services/generals';
 
 @Module({
-  imports: [ConfigsModule, DatabasesModule, ContextModule, AdminsModule, GeneralsModule],
+  imports: [ConfigsModule, DatabasesModule, ContextModule, ...adminsModules, ...generalsModules],
   providers: [
     {
       provide: APP_INTERCEPTOR,
