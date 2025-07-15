@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigsService } from '@configs';
 import entities from './entities';
 import { DataSource } from 'typeorm';
+import { BullModule } from '@nestjs/bullmq';
 
 @Module({
   imports: [
@@ -11,7 +12,16 @@ import { DataSource } from 'typeorm';
       useFactory: (config: ConfigsService) => ({
         ...config.mysql,
         entities,
-        synchronize: true,
+        synchronize: false,
+        logging: false,
+      }),
+    }),
+    BullModule.forRootAsync({
+      inject: [ConfigsService],
+      useFactory: (config: ConfigsService) => ({
+        connection: {
+          ...config.redis,
+        },
       }),
     }),
   ],

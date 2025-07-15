@@ -1,10 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { AdminUsersService } from '../applications/admin-users.service';
 
-@ApiTags('Users')
+@ApiTags('users')
 @Controller('admins/users')
 export class AdminUsersController {
-  @Get()
-  @ApiOperation({ summary: '유저 목록 조회' })
-  async list() {}
+  constructor(private readonly adminUsersService: AdminUsersService) {}
+
+  @Post()
+  async create() {
+    return this.adminUsersService.register();
+  }
 }

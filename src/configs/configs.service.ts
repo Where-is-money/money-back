@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService as NestConfigService } from '@nestjs/config';
-import { DataSourceOptions } from 'typeorm';
+import { type ConnectionOptions } from 'bullmq';
+import { type DataSourceOptions } from 'typeorm';
 
 @Injectable()
 export class ConfigsService {
@@ -26,6 +27,16 @@ export class ConfigsService {
     };
 
     this.checkUndefined(config, 'mysql');
+    return config;
+  }
+
+  get redis() {
+    const config: ConnectionOptions = {
+      host: this.config.get<string>('REDIS_HOST'),
+      port: Number(this.config.get<number>('REDIS_PORT')),
+    };
+
+    this.checkUndefined(config, 'redis');
     return config;
   }
 
