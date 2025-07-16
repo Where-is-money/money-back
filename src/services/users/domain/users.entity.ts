@@ -1,6 +1,7 @@
-import { AfterInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AfterInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { CommonEntity } from '@libs/ddd';
 import { UserCreatedEvent } from './events';
+import { customAlphabet } from 'nanoid';
 
 type Creator = {
   name: string;
@@ -9,8 +10,8 @@ type Creator = {
 
 @Entity()
 export class User extends CommonEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryColumn()
+  id!: string;
 
   @Column()
   name!: string;
@@ -18,17 +19,18 @@ export class User extends CommonEntity {
   @Column()
   email!: string;
 
-  @AfterInsert()
-  private serialize() {
-    this.publishEvent(new UserCreatedEvent(this.id));
-  }
-
   constructor(args: Creator) {
     super();
 
     if (args) {
+      this.id = customAlphabet(
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+        10
+      )();
       this.name = args.name;
       this.email = args.email;
+
+      this.publishEvent(new UserCreatedEvent(this.id));
     }
   }
 }

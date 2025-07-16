@@ -1,9 +1,9 @@
 import { EventBox } from '@libs/ddd';
 
 export class UserCreatedEvent extends EventBox {
-  public userId!: number;
+  public userId!: string;
 
-  constructor(userId: number) {
+  constructor(userId: string) {
     super();
     this.userId = userId;
   }

@@ -1,9 +1,7 @@
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
-  AfterInsert,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -19,6 +17,9 @@ export enum EventBoxStatus {
 export class EventBox {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
+
+  @Column()
+  traceId!: string;
 
   @Column()
   type!: string;
@@ -41,8 +42,13 @@ export class EventBox {
 
   static fromEvent(event: EventBox): EventBox {
     const eventBox = new EventBox();
+    const { id, type, traceId, ...rest } = event;
     eventBox.type = event.constructor.name;
-    eventBox.payload = JSON.stringify(event);
+    eventBox.payload = JSON.stringify(rest);
     return eventBox;
+  }
+
+  setTraceId(traceId: string) {
+    this.traceId = traceId;
   }
 }

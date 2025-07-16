@@ -17,16 +17,22 @@ export abstract class CommonRepository<T extends CommonEntity> {
   }
 
   async save(entities: T[]) {
-    const txId = this.context.get<ContextKey.TRACE_ID, string>(ContextKey.TRACE_ID);
-    entities.forEach((entity) => entity.setTraceId(txId));
-
-    await this.entityManager.save(entities);
+    await this.saveEntities(entities);
     await this.saveEvents(entities.flatMap((entity) => entity.getPublishedEvents()));
   }
 
-  async saveEvents(events: EventBox[]) {
-    if (!events || events.length === 0) return;
+  private async saveEntities(entities: T[]) {
+    entities.forEach((entity) => entity.setTraceId(this.getTraceId()));
+    await this.entityManager.save(entities);
+  }
+
+  private async saveEvents(events: EventBox[]) {
     const eventBoxes = events.map((event) => EventBox.fromEvent(event));
+    eventBoxes.forEach((event) => event.setTraceId(this.getTraceId()));
     await this.entityManager.save(eventBoxes);
+  }
+
+  private getTraceId() {
+    return this.context.get<ContextKey.TRACE_ID, string>(ContextKey.TRACE_ID);
   }
 }

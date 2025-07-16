@@ -30,6 +30,7 @@
     "@nestjs/typeorm": "^11.0.0",
     "bullmq": "^5.56.4",
     "mysql2": "^3.14.2",
+    "nanoid": "^3.3.11",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.25",
