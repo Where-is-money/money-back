@@ -1,4 +1,4 @@
-import { CommonService } from '../ddd';
+import { CommonService, EventBox } from '../ddd';
 import { ContextKey } from '../context';
 
 export function Transactional() {
@@ -10,12 +10,21 @@ export function Transactional() {
 
       // @ts-expect-error private property여서 타입 에러가 발생.
       const entityManager = this.entityManager;
+      // @ts-expect-error private property여서 타입 에러가 발생.
+      const eventEmitter = this.eventEmitter;
 
+      // NOTE: 트랜잭션 처리
       await entityManager.transaction(async (transactionalEntityManager) => {
         this.context.set(ContextKey.ENTITY_MANAGER, transactionalEntityManager);
         result = await originalMethod.apply(this, args);
         this.context.set(ContextKey.ENTITY_MANAGER, null);
       });
+
+      // NOTE: 트랜잭션 완료 후 이벤트 박스를 발행합니다.
+      const eventBoxes = this.context.get<ContextKey.EVENT_BOXES, EventBox[]>(
+        ContextKey.EVENT_BOXES
+      );
+      eventBoxes.forEach((event) => eventEmitter.emit('event.box.created', event));
 
       return result;
     };

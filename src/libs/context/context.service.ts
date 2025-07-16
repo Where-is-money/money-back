@@ -4,6 +4,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 export enum ContextKey {
   TRACE_ID = 'traceId',
   ENTITY_MANAGER = 'entityManager',
+  EVENT_BOXES = 'eventBoxes',
 }
 
 export const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>();

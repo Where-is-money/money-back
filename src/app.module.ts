@@ -7,9 +7,19 @@ import { ContextModule } from '@libs/context';
 import { RequestLoggerInterceptor } from '@libs/interceptors';
 import adminsModules from './services/admins';
 import generalsModules from './services/generals';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { CommonModule } from '@common';
 
 @Module({
-  imports: [ConfigsModule, DatabasesModule, ContextModule, ...adminsModules, ...generalsModules],
+  imports: [
+    ConfigsModule,
+    DatabasesModule,
+    ContextModule,
+    EventEmitterModule.forRoot(),
+    CommonModule,
+    ...adminsModules,
+    ...generalsModules,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,

@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,6 +15,7 @@ export enum EventBoxStatus {
 }
 
 @Entity()
+@Index(['status', 'createdAt']) // NOTE: 자주 조회되므로 복합인덱스
 export class EventBox {
   @PrimaryGeneratedColumn('uuid')
   id!: string;

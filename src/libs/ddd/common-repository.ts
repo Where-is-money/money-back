@@ -30,6 +30,8 @@ export abstract class CommonRepository<T extends CommonEntity> {
     const eventBoxes = events.map((event) => EventBox.fromEvent(event));
     eventBoxes.forEach((event) => event.setTraceId(this.getTraceId()));
     await this.entityManager.save(eventBoxes);
+
+    this.context.set(ContextKey.EVENT_BOXES, eventBoxes);
   }
 
   private getTraceId() {
