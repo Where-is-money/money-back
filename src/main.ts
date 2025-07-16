@@ -8,12 +8,15 @@ import { setupAdminSwagger, setupGeneralSwagger } from './swaggers/swagger.setup
 
   // 기존 설정
   const config = app.get(ConfigsService);
+  const { port } = config.server;
 
   // Swagger 설정
   setupAdminSwagger(app);
   setupGeneralSwagger(app);
 
-  await app.listen(config.server.port, () =>
-    console.log(`server is running on ${config.server.port}.`)
-  );
+  await app.listen(port, () => {
+    console.log(`server is running on ${port}.`);
+    console.log(`[admin-api-docs] http://localhost:${port}/admin-api-docs`);
+    console.log(`[general-api-docs] http://localhost:${port}/general-api-docs`);
+  });
 })();

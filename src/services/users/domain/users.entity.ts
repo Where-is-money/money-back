@@ -1,7 +1,7 @@
-import { AfterInsert, Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { CommonEntity } from '@libs/ddd';
 import { UserCreatedEvent } from './events';
-import { customAlphabet } from 'nanoid';
+import { CustomNanoId } from '@libs/helpers';
 
 type Creator = {
   name: string;
@@ -23,10 +23,7 @@ export class User extends CommonEntity {
     super();
 
     if (args) {
-      this.id = customAlphabet(
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-        10
-      )();
+      this.id = CustomNanoId();
       this.name = args.name;
       this.email = args.email;
 
