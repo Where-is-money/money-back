@@ -23,7 +23,7 @@
       "@configs": ["configs"],
       "@databases": ["databases"],
       "@middlewares": ["middlewares"],
-      "@common": ["common"],
+      "@common/*": ["common/*"],
       "@libs/*": ["libs/*"]
     }
   }

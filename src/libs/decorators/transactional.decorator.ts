@@ -24,7 +24,11 @@ export function Transactional() {
       const eventBoxes = this.context.get<ContextKey.EVENT_BOXES, EventBox[]>(
         ContextKey.EVENT_BOXES
       );
-      eventBoxes.forEach((event) => eventEmitter.emit('event.box.created', event));
+
+      if (eventBoxes) {
+        eventBoxes.forEach((event) => eventEmitter.emit('event.box.created', event));
+        this.context.set(ContextKey.EVENT_BOXES, null);
+      }
 
       return result;
     };

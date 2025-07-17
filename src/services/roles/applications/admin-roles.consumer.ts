@@ -1,20 +1,16 @@
-import { Processor, WorkerHost } from '@nestjs/bullmq';
-import { Job } from 'bullmq';
-import { UserCreatedEvent } from '../../users/domain/events';
+import { Processor } from '@nestjs/bullmq';
+import { QueueName } from '@common/event-dispatcher/queue';
+import { AdminRolesService } from './admin-roles.service';
+import { CommonConsumer } from '@libs/ddd';
 
-@Processor('role-service-queue')
-export class AdminRolesConsumer extends WorkerHost {
-  constructor() {
+@Processor(QueueName.ROLE_SERVICE_QUEUE)
+export class AdminRolesConsumer extends CommonConsumer {
+  constructor(private readonly adminRolesService: AdminRolesService) {
     super();
-  }
 
-  async process(job: Job) {
-    switch (job.name) {
-      case 'UserCreatedEvent':
-        await this.handleUserCreatedEvent(job.data);
-        break;
-    }
+    this.handlerMap.set(
+      'UserCreatedEvent',
+      this.adminRolesService.hest.bind(this.adminRolesService)
+    );
   }
-
-  async handleUserCreatedEvent(event: UserCreatedEvent) {}
 }

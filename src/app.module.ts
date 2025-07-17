@@ -8,7 +8,7 @@ import { RequestLoggerInterceptor } from '@libs/interceptors';
 import adminsModules from './services/admins';
 import generalsModules from './services/generals';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CommonModule } from '@common';
+import { CommonModule } from '@common/common.module';
 
 @Module({
   imports: [

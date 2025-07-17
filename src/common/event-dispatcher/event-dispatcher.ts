@@ -7,6 +7,7 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { QueueName } from './queue';
 
+// FIXME: 여기 좀 더 리팩토링 필요
 @Injectable()
 export class EventDispatcher {
   private readonly eventMap = new Map<string, string[]>([
@@ -47,9 +48,7 @@ export class EventDispatcher {
 
     // NOTE: 이벤트 타입에 따라 이벤트 큐에 넣습니다.
     await Promise.all(
-      targetQueues.map((queueName) =>
-        this.queues[queueName].add(event.type, JSON.parse(event.payload))
-      )
+      targetQueues.map((queueName) => this.queues[queueName].add(event.type, event))
     );
 
     // NOTE: Redis 이벤트 큐에 넣은 이벤트는 모두 처리되었으므로 이벤트 박스를 완료 처리합니다.
