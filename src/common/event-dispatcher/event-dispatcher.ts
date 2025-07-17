@@ -9,10 +9,20 @@ import { QueueName } from './queue';
 
 @Injectable()
 export class EventDispatcher {
+  private readonly eventMap = new Map<string, string[]>([
+    ['UserCreatedEvent', [QueueName.ROLE_SERVICE_QUEUE]],
+  ]);
+
+  private readonly queues = {
+    [QueueName.ROLE_SERVICE_QUEUE]: this.roleServiceQueue,
+    [QueueName.USER_SERVICE_QUEUE]: this.userServiceQueue,
+  };
+
   constructor(
     @InjectRepository(EventBox)
     private readonly eventBoxRepository: Repository<EventBox>,
-    @InjectQueue(QueueName.ROLE_SERVICE_QUEUE) private readonly roleServiceQueue: Queue
+    @InjectQueue(QueueName.ROLE_SERVICE_QUEUE) private readonly roleServiceQueue: Queue,
+    @InjectQueue(QueueName.USER_SERVICE_QUEUE) private readonly userServiceQueue: Queue
   ) {}
 
   @OnEvent('event.box.created')
@@ -29,11 +39,24 @@ export class EventDispatcher {
       throw new InternalServerErrorException(`There is no event box.`);
     }
 
-    if (event.type === 'UserCreatedEvent') {
-      await this.roleServiceQueue.add(event.type, JSON.parse(event.payload));
+    const targetQueues = this.getQueue(event.type);
 
-      // FIXME: 한곳에서 깔쌈하게 처리하자
-      await this.eventBoxRepository.update(event.id, { status: EventBoxStatus.COMPLETED });
+    if (!targetQueues) {
+      throw new InternalServerErrorException(`There is no queue for ${event.type}.`);
     }
+
+    // NOTE: 이벤트 타입에 따라 이벤트 큐에 넣습니다.
+    await Promise.all(
+      targetQueues.map((queueName) =>
+        this.queues[queueName].add(event.type, JSON.parse(event.payload))
+      )
+    );
+
+    // NOTE: Redis 이벤트 큐에 넣은 이벤트는 모두 처리되었으므로 이벤트 박스를 완료 처리합니다.
+    await this.eventBoxRepository.update(event.id, { status: EventBoxStatus.COMPLETED });
+  }
+
+  private getQueue(eventType: string) {
+    return this.eventMap.get(eventType);
   }
 }
