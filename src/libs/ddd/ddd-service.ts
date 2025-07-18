@@ -4,7 +4,7 @@ import { EntityManager } from 'typeorm';
 import { Context } from '@libs/context';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-export abstract class CommonService {
+export abstract class DddService {
   @InjectEntityManager()
   private readonly entityManager!: EntityManager;
 

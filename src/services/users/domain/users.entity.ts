@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { CommonEntity } from '@libs/ddd';
+import { DddEntity } from '@libs/ddd';
 import { UserCreatedEvent } from './events';
 import { CustomNanoId } from '@libs/helpers';
 
@@ -9,7 +9,7 @@ type Creator = {
 };
 
 @Entity()
-export class User extends CommonEntity {
+export class User extends DddEntity {
   @PrimaryColumn()
   id!: string;
 

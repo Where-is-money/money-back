@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CommonService } from '@libs/ddd';
+import { DddService } from '@libs/ddd';
 import { UsersRepository } from '../infrastructure/users.repository';
 import { Transactional } from '@libs/decorators';
 import { User } from '../domain/users.entity';
 
 @Injectable()
-export class AdminUsersService extends CommonService {
+export class AdminUsersService extends DddService {
   constructor(private readonly usersRepository: UsersRepository) {
     super();
   }

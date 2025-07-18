@@ -3,7 +3,7 @@ import { Job } from 'bullmq';
 import { Logger } from '@nestjs/common';
 import { asyncLocalStorage, ContextKey } from '../context';
 
-export abstract class CommonConsumer extends WorkerHost {
+export abstract class DddConsumer extends WorkerHost {
   protected readonly logger: Logger;
 
   protected readonly handlerMap = new Map<string, (data: any) => Promise<void>>();

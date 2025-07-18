@@ -1,11 +1,11 @@
-import { CommonService, EventBox } from '../ddd';
+import { DddService, EventBox } from '../ddd';
 import { ContextKey } from '../context';
 
 export function Transactional() {
-  return function (target: CommonService, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (target: DddService, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
 
-    descriptor.value = async function (this: CommonService, ...args: any[]) {
+    descriptor.value = async function (this: DddService, ...args: any[]) {
       let result: any;
 
       // @ts-expect-error private property여서 타입 에러가 발생.

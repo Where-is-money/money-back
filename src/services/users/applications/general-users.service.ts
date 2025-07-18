@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommonService } from '@libs/ddd';
+import { DddService } from '@libs/ddd';
 
 @Injectable()
-export class GeneralUsersService extends CommonService {}
+export class GeneralUsersService extends DddService {}

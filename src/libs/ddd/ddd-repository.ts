@@ -1,10 +1,10 @@
 import { InjectDataSource } from '@nestjs/typeorm';
-import { CommonEntity } from './common-entity';
+import { DddEntity } from './ddd-entity';
 import { DataSource, EntityManager, ObjectType } from 'typeorm';
 import { Context, ContextKey } from '@libs/context';
 import { EventBox } from './event-box';
 
-export abstract class CommonRepository<T extends CommonEntity> {
+export abstract class DddRepository<T extends DddEntity> {
   constructor(
     @InjectDataSource() private readonly dataSource: DataSource,
     private readonly context: Context

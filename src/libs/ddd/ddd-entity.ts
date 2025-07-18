@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
 import { EventBox } from './event-box';
 
 @Entity()
-export abstract class CommonEntity {
+export abstract class DddEntity {
   @CreateDateColumn()
   readonly createdAt!: Date;
 
