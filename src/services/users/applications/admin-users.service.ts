@@ -3,6 +3,7 @@ import { DddService } from '@libs/ddd';
 import { UsersRepository } from '../infrastructure/users.repository';
 import { Transactional } from '@libs/decorators';
 import { User } from '../domain/users.entity';
+import { UserCreateDto } from '../presentation/dto';
 
 @Injectable()
 export class AdminUsersService extends DddService {
@@ -11,8 +12,13 @@ export class AdminUsersService extends DddService {
   }
 
   @Transactional()
-  async register() {
-    const user = new User({ name: 'test', email: 'test@test.com' });
+  async register({ name, email, password, roleType }: UserCreateDto) {
+    const user = new User({
+      name,
+      email,
+      password,
+      roleType,
+    });
 
     await this.usersRepository.save([user]);
 
