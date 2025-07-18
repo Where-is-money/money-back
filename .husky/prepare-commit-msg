@@ -6,6 +6,6 @@ if echo "$branch_name" | grep -qE '([A-Z]+-[0-9]+)'; then
   issue_key=$(echo "$branch_name" | grep -oE '[A-Z]+-[0-9]+')
   commit_msg_file=$1
   if ! grep -q "$issue_key" "$commit_msg_file"; then
-    sed -i.bak "1s/^/[$issue_key] /" "$commit_msg_file"
+    sed -i.bak "1s/^/$issue_key /" "$commit_msg_file"
   fi
 fi
