@@ -40,6 +40,15 @@ export class ConfigsService {
     return config;
   }
 
+  get jwt() {
+    const config = {
+      secret: this.config.get<string>('JWT_SECRET'),
+    };
+
+    this.checkUndefined(config, 'jwt');
+    return config;
+  }
+
   private checkUndefined(config: Record<string, any>, name: string) {
     Object.entries(config).forEach(([key, value]) => {
       if (value === undefined) {

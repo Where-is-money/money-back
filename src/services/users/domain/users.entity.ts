@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { DddEntity } from '@libs/ddd';
 import { UserCreatedEvent } from './events';
@@ -47,7 +48,11 @@ export class User extends DddEntity {
     return createHash('sha256').update(password).digest('hex');
   }
 
-  private comparePassword(password: string, hashedPassword: string) {
-    return this.hashPassword(password) === hashedPassword;
+  comparePassword(password: string, hashedPassword: string) {
+    if (this.hashPassword(password) !== hashedPassword) {
+      throw new BadRequestException(`email or password is incorrect.`, {
+        cause: `${this.email}'s password is incorrect.`,
+      });
+    }
   }
 }
