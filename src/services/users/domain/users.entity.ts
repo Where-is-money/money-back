@@ -19,7 +19,7 @@ export class User extends DddEntity {
   @PrimaryColumn()
   id!: string;
 
-  @Column()
+  @Column({ unique: true })
   email!: string;
 
   @Column()
@@ -59,8 +59,8 @@ export class User extends DddEntity {
 
   comparePassword(password: string, hashedPassword: string) {
     if (this.hashPassword(password) !== hashedPassword) {
-      throw new BadRequestException(`email or password is incorrect.`, {
-        cause: `${this.email}'s password is incorrect.`,
+      throw new BadRequestException(`${this.email}'s password is incorrect.`, {
+        cause: `email or password is incorrect.`,
       });
     }
   }

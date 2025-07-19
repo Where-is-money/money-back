@@ -17,8 +17,8 @@ export class AuthService extends DddService {
     const [user] = await this.usersRepository.find({ email });
 
     if (!user) {
-      throw new BadRequestException(`email or password is incorrect.`, {
-        cause: `${email} is not registered.`,
+      throw new BadRequestException(`${email} is not registered.`, {
+        cause: `email or password is incorrect.`,
       });
     }
 
