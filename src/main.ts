@@ -4,7 +4,7 @@ import { ConfigsService } from '@configs';
 import { setupAdminSwagger, setupGeneralSwagger } from './swaggers/swagger.setup';
 
 (async () => {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   // 기존 설정
   const config = app.get(ConfigsService);
