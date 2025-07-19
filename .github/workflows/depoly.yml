@@ -1,0 +1,36 @@
+# .github/workflows/deploy.yml
+
+name: Deploy to EC2
+
+# main 브랜치에 push 이벤트가 발생했을 때 이 워크플로우를 실행합니다.
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 워크플로우를 실행할 가상 환경
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2
+        # SSH 접속 및 원격 명령어 실행을 도와주는 마켓플레이스 Action
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }} # GitHub Secret에서 IP 주소 가져오기
+          username: ${{ secrets.EC2_USERNAME }} # GitHub Secret에서 사용자 이름 가져오기
+          key: ${{ secrets.EC2_PRIVATE_KEY }} # GitHub Secret에서 PEM 키 가져오기
+          script: |
+            # 아래 스크립트들이 EC2 인스턴스에서 실행됩니다.
+            cd /home/ubuntu/money-back # 1단계에서 클론한 프로젝트 경로로 이동
+            git pull origin main # main 브랜치의 최신 소스 코드를 받아옵니다.
+            npm install # 의존성 패키지를 설치합니다.
+
+            # NestJS 같이 빌드가 필요한 경우 빌드 스크립트를 실행합니다.
+            npm run build 
+
+            # PM2를 재시작합니다. 'reload'는 중단 없는 재시작을 지원합니다.
+            pm2 reload ecosystem.config.js --env production
