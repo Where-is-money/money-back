@@ -1,5 +1,5 @@
 import { type MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigsModule } from '@configs';
 import { DatabasesModule } from '@databases';
 import { ContextMiddleware, UUIDMiddleware } from '@middlewares';
@@ -12,6 +12,7 @@ import { AuthModule } from './services/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigsService } from '@configs';
 import { AuthGuard, RoleGuard } from '@libs/guards';
+import { ExceptionFilter } from '@libs/filters';
 
 @Module({
   imports: [
@@ -41,6 +42,10 @@ import { AuthGuard, RoleGuard } from '@libs/guards';
     {
       provide: APP_GUARD,
       useClass: RoleGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: ExceptionFilter,
     },
   ],
 })
