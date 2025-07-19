@@ -36,4 +36,4 @@ jobs:
             npm run build 
 
             # PM2를 재시작합니다. 'reload'는 중단 없는 재시작을 지원합니다.
-            pm2 reload ecosystem.config.js
+            pm2 reload ecosystem.config.js --env development
