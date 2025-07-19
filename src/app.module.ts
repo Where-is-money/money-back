@@ -15,7 +15,6 @@ import { CommonModule } from '@common/common.module';
     ConfigsModule,
     DatabasesModule,
     ContextModule,
-    EventEmitterModule.forRoot(),
     CommonModule,
     ...adminsModules,
     ...generalsModules,
