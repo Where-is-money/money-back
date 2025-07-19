@@ -24,6 +24,9 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }} # GitHub Secret에서 사용자 이름 가져오기
           key: ${{ secrets.EC2_PRIVATE_KEY }} # GitHub Secret에서 PEM 키 가져오기
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
             # 아래 스크립트들이 EC2 인스턴스에서 실행됩니다.
             cd /home/ubuntu/money-back # 1단계에서 클론한 프로젝트 경로로 이동
             git pull origin main # main 브랜치의 최신 소스 코드를 받아옵니다.
