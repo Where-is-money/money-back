@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
-import { RoleType } from '../../../roles/domain/roles.entity';
 
 export class UserCreateDto {
   @ApiProperty({ description: '이름', example: '홍길동' })
@@ -8,7 +7,7 @@ export class UserCreateDto {
   @IsNotEmpty()
   name!: string;
 
-  @ApiProperty({ description: '이메일', example: 'test@test.com' })
+  @ApiProperty({ description: '이메일', example: 'test@admin.com' })
   @IsString()
   @IsNotEmpty()
   email!: string;
@@ -20,9 +19,4 @@ export class UserCreateDto {
   @IsString()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/)
   password!: string;
-
-  @ApiProperty({ description: '권한', example: RoleType.ADMIN })
-  @IsString()
-  @IsNotEmpty()
-  roleType!: RoleType;
 }
