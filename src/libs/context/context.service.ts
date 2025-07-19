@@ -5,6 +5,7 @@ export enum ContextKey {
   TRACE_ID = 'traceId',
   ENTITY_MANAGER = 'entityManager',
   EVENT_BOXES = 'eventBoxes',
+  USER = 'user',
 }
 
 export const asyncLocalStorage = new AsyncLocalStorage<Map<string, any>>();

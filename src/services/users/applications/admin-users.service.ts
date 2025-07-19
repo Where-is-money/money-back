@@ -11,6 +11,15 @@ export class AdminUsersService extends DddService {
     super();
   }
 
+  async list() {
+    const [users, total] = await Promise.all([
+      this.usersRepository.find({}),
+      this.usersRepository.count({}),
+    ]);
+
+    return { items: users, total };
+  }
+
   @Transactional()
   async register({ name, email, password }: UserCreateDto) {
     const user = User.of({ name, email, password });
