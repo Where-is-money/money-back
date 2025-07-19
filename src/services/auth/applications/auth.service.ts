@@ -23,7 +23,7 @@ export class AuthService extends DddService {
     }
 
     user.comparePassword(password, user.password);
-    const accessToken = await this.jwtService.signAsync({ id: user.id });
+    const accessToken = await this.jwtService.signAsync({ userId: user.id });
 
     return { accessToken };
   }

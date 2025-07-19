@@ -9,9 +9,9 @@ import adminsModules from './services/admins';
 import generalsModules from './services/generals';
 import { CommonModule } from '@common/common.module';
 import { AuthModule } from './services/auth/auth.module';
-import { AuthGuard } from './libs/guards/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigsService } from '@configs';
+import { AuthGuard, RoleGuard } from '@libs/guards';
 
 @Module({
   imports: [
@@ -37,6 +37,10 @@ import { ConfigsService } from '@configs';
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
     },
   ],
 })
