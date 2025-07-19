@@ -40,15 +40,15 @@ export class EventDispatcher {
       throw new InternalServerErrorException(`There is no event box.`);
     }
 
-    const targetQueues = this.getQueue(event.type);
+    const targetQueues = this.getQueue(event.eventType);
 
     if (!targetQueues) {
-      throw new InternalServerErrorException(`There is no queue for ${event.type}.`);
+      throw new InternalServerErrorException(`There is no queue for ${event.eventType}.`);
     }
 
     // NOTE: 이벤트 타입에 따라 이벤트 큐에 넣습니다.
     await Promise.all(
-      targetQueues.map((queueName) => this.queues[queueName].add(event.type, event))
+      targetQueues.map((queueName) => this.queues[queueName].add(event.eventType, event))
     );
 
     // NOTE: Redis 이벤트 큐에 넣은 이벤트는 모두 처리되었으므로 이벤트 박스를 완료 처리합니다.

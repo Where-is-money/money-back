@@ -24,7 +24,7 @@ export class EventBox {
   traceId!: string;
 
   @Column()
-  type!: string;
+  eventType!: string;
 
   @Column({ type: 'mediumtext' })
   payload!: string;
@@ -39,13 +39,13 @@ export class EventBox {
   private readonly updatedAt!: Date;
 
   constructor() {
-    this.type = this.constructor.name;
+    this.eventType = this.constructor.name;
   }
 
   static fromEvent(event: EventBox): EventBox {
     const eventBox = new EventBox();
-    const { id, type, traceId, ...rest } = event;
-    eventBox.type = event.constructor.name;
+    const { id, eventType, traceId, ...rest } = event;
+    eventBox.eventType = event.constructor.name;
     eventBox.payload = JSON.stringify(rest);
     return eventBox;
   }

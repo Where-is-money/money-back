@@ -3,12 +3,13 @@ import { DddEntity } from '@libs/ddd';
 import { UserCreatedEvent } from './events';
 import { CustomNanoId } from '@libs/helpers';
 import { createHash } from 'crypto';
+import { RoleType } from '../../roles/domain/roles.entity';
 
 type Creator = {
   name: string;
   email: string;
   password: string;
-  roleType: string;
+  roleType: RoleType;
 };
 
 @Entity()
@@ -25,8 +26,8 @@ export class User extends DddEntity {
   @Column()
   name!: string;
 
-  @Column()
-  roleType!: string;
+  @Column({ type: 'enum', enum: RoleType })
+  roleType!: RoleType;
 
   constructor(args: Creator) {
     super();
@@ -38,7 +39,7 @@ export class User extends DddEntity {
       this.password = this.hashPassword(args.password);
       this.roleType = args.roleType;
 
-      this.publishEvent(new UserCreatedEvent(this.id));
+      this.publishEvent(new UserCreatedEvent(this.id, this.roleType));
     }
   }
 
