@@ -12,13 +12,8 @@ export class AdminUsersService extends DddService {
   }
 
   @Transactional()
-  async register({ name, email, password, roleType }: UserCreateDto) {
-    const user = new User({
-      name,
-      email,
-      password,
-      roleType,
-    });
+  async register({ name, email, password }: UserCreateDto) {
+    const user = User.of({ name, email, password });
 
     await this.usersRepository.save([user]);
 

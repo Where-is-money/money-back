@@ -5,6 +5,7 @@ import { UserCreatedEvent } from './events';
 import { CustomNanoId } from '@libs/helpers';
 import { createHash } from 'crypto';
 import { RoleType } from '../../roles/domain/roles.entity';
+import { UserCreateDto } from '../presentation/dto';
 
 type Creator = {
   name: string;
@@ -42,6 +43,14 @@ export class User extends DddEntity {
 
       this.publishEvent(new UserCreatedEvent(this.id, this.roleType));
     }
+  }
+
+  static of({ name, email, password }: UserCreateDto) {
+    const [_, domain] = email.split('@');
+
+    // FIXME: 추후에 도메인 구입하면 그걸로 체크해아한듯.
+    const roleType = domain === 'admin.com' ? RoleType.ADMIN : RoleType.GENERAL;
+    return new User({ name, email, password, roleType });
   }
 
   private hashPassword(password: string) {
