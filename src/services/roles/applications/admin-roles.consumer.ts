@@ -10,7 +10,7 @@ export class AdminRolesConsumer extends DddConsumer {
 
     this.handlerMap.set(
       'UserCreatedEvent',
-      this.adminRolesService.hest.bind(this.adminRolesService)
+      this.adminRolesService.handleUserCreatedEvent.bind(this.adminRolesService)
     );
   }
 }
