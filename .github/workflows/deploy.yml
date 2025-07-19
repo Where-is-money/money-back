@@ -16,6 +16,19 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
 
+      - name: Debug Secrets
+        id: debug_secrets # 스텝의 ID를 지정하여 나중에 참조
+        run: |
+          # 각 Secret이 비어있지 않으면 'true'를, 비어있으면 'false'를 출력합니다.
+          echo "HOST_SET=${{ secrets.EC2_HOST != '' }}" >> $GITHUB_OUTPUT
+          echo "USERNAME_SET=${{ secrets.EC2_USERNAME != '' }}" >> $GITHUB_OUTPUT
+          echo "KEY_SET=${{ secrets.EC2_PRIVATE_KEY != '' }}" >> $GITHUB_OUTPUT
+
+          # 로그에는 안전한 확인 메시지만 출력합니다.
+          echo "Host Secret Set: ${{ secrets.EC2_HOST != '' }}"
+          echo "Username Secret Set: ${{ secrets.EC2_USERNAME != '' }}"
+          echo "Private Key Secret Set: ${{ secrets.EC2_PRIVATE_KEY != '' }}"
+
       - name: Deploy to EC2
         # SSH 접속 및 원격 명령어 실행을 도와주는 마켓플레이스 Action
         uses: appleboy/ssh-action@master
