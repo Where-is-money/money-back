@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException('Unauthorized', { cause: `There is no token.` });
+      throw new UnauthorizedException('There is no token', { cause: `Unauthorized` });
     }
 
     const { userId } = await this.jwtService.verifyAsync<{ userId: string }>(token, {
@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
     const [user] = await this.usersRepository.find({ id: userId });
 
     if (!user) {
-      throw new UnauthorizedException('Unauthorized', { cause: `User not found.` });
+      throw new UnauthorizedException('User not found', { cause: `Unauthorized` });
     }
 
     this.context.set(ContextKey.USER, user);

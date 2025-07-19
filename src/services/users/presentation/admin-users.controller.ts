@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminUsersService } from '../applications/admin-users.service';
 import { UserCreateDto } from './dto';
-import { Roles } from '@libs/decorators';
+import { Roles, Public } from '@libs/decorators';
 import { RoleType } from '../../roles/domain/roles.entity';
 
 @ApiTags('Users')
@@ -10,6 +10,7 @@ import { RoleType } from '../../roles/domain/roles.entity';
 export class AdminUsersController {
   constructor(private readonly adminUsersService: AdminUsersService) {}
 
+  @Public()
   @Post()
   async create(@Body() body: UserCreateDto) {
     await this.adminUsersService.register(body);
